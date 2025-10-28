@@ -212,30 +212,27 @@ struct ReportDetailView: View {
 
         isExporting = true
 
-        // Generate PDF on background thread
-        DispatchQueue.global(qos: .userInitiated).async {
-            let pdfURL = PDFGenerator.generatePDF(
-                for: report,
-                project: project,
-                userSettings: userSettings
-            )
+        // Generate PDF on main thread (must stay on main thread for SwiftData access)
+        // PDF generation is fast enough that it won't block UI
+        let pdfURL = PDFGenerator.generatePDF(
+            for: report,
+            project: project,
+            userSettings: userSettings
+        )
 
-            DispatchQueue.main.async {
-                isExporting = false
+        isExporting = false
 
-                if let pdfURL = pdfURL {
-                    // PDF already saved to Documents/DailyReports by PDFGenerator
-                    print("✅ PDF saved to: \(pdfURL.path)")
+        if let pdfURL = pdfURL {
+            // PDF already saved to Documents/DailyReports by PDFGenerator
+            print("✅ PDF saved to: \(pdfURL.path)")
 
-                    let fileName = pdfURL.lastPathComponent
-                    exportMessage = "PDF saved successfully to:\n\n\(fileName)\n\nYou can access it in:\nFiles app > On My iPhone > FieldVision > DailyReports"
-                    showExportAlert = true
-                } else {
-                    print("❌ PDF generation failed")
-                    exportMessage = "Failed to generate PDF. Please try again."
-                    showExportAlert = true
-                }
-            }
+            let fileName = pdfURL.lastPathComponent
+            exportMessage = "PDF saved successfully to:\n\n\(fileName)\n\nYou can access it in:\nFiles app > On My iPhone > FieldVision > DailyReports"
+            showExportAlert = true
+        } else {
+            print("❌ PDF generation failed")
+            exportMessage = "Failed to generate PDF. Please try again."
+            showExportAlert = true
         }
     }
 }
