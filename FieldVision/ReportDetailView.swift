@@ -196,6 +196,10 @@ struct ReportDetailView: View {
     }
     
     func exportPDF() {
+        // IMPORTANT: This function has NO PREVIEW, NO SHARING, NO UIActivityViewController
+        // It ONLY saves the PDF to Documents/DailyReports and shows a success alert
+        // This prevents iOS preview crashes (makeImagePlus errors)
+
         print("📄 Step 1: exportPDF() called")
         print("📄 Step 1a: Report exists: \(report.projectName)")
 
