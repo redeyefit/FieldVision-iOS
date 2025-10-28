@@ -151,7 +151,9 @@ struct ReportDetailView: View {
             .disabled(true)
             
             Button {
+                print("🔵 Export PDF button tapped")
                 exportPDF()
+                print("🔵 Export PDF button action completed")
             } label: {
                 HStack {
                     if isExporting {
@@ -194,46 +196,75 @@ struct ReportDetailView: View {
     }
     
     func exportPDF() {
-        print("📄 Exporting PDF...")
+        print("📄 Step 1: exportPDF() called")
+        print("📄 Step 1a: Report exists: \(report.projectName)")
+
+        print("📄 Step 2: Checking settings...")
+        print("📄 Step 2a: Settings count: \(settings.count)")
 
         // Get user settings
         guard let userSettings = settings.first else {
+            print("❌ Step 2b: No user settings found")
             exportMessage = "User settings not found. Please configure settings first."
             showExportAlert = true
             return
         }
+        print("✅ Step 2c: User settings found - userName: \(userSettings.userName)")
 
+        print("📄 Step 3: Checking project relationship...")
         // Get project (report should have a relationship to project)
         guard let project = report.project else {
+            print("❌ Step 3a: No project relationship found")
             exportMessage = "Project information not found for this report."
             showExportAlert = true
             return
         }
+        print("✅ Step 3b: Project found - name: \(project.name)")
 
+        print("📄 Step 4: Setting isExporting to true...")
         isExporting = true
+        print("✅ Step 4a: isExporting = true")
+
+        print("📄 Step 5: About to call PDFGenerator.generatePDF()...")
+        print("📄 Step 5a: Report workStatus length: \(report.workStatus.count)")
 
         // Generate PDF on main thread (must stay on main thread for SwiftData access)
         // PDF generation is fast enough that it won't block UI
+        print("📄 Step 5b: Calling PDFGenerator.generatePDF()...")
         let pdfURL = PDFGenerator.generatePDF(
             for: report,
             project: project,
             userSettings: userSettings
         )
+        print("📄 Step 5c: PDFGenerator.generatePDF() returned")
 
+        print("📄 Step 6: Setting isExporting to false...")
         isExporting = false
+        print("✅ Step 6a: isExporting = false")
 
+        print("📄 Step 7: Checking pdfURL result...")
         if let pdfURL = pdfURL {
-            // PDF already saved to Documents/DailyReports by PDFGenerator
+            print("✅ Step 7a: PDF URL exists")
             print("✅ PDF saved to: \(pdfURL.path)")
 
+            print("📄 Step 7b: Getting filename...")
             let fileName = pdfURL.lastPathComponent
+            print("✅ Step 7c: Filename: \(fileName)")
+
+            print("📄 Step 7d: Setting export message...")
             exportMessage = "PDF saved successfully to:\n\n\(fileName)\n\nYou can access it in:\nFiles app > On My iPhone > FieldVision > DailyReports"
+
+            print("📄 Step 7e: Showing alert...")
             showExportAlert = true
+            print("✅ Step 7f: Alert shown")
         } else {
-            print("❌ PDF generation failed")
+            print("❌ Step 7g: PDF URL is nil")
             exportMessage = "Failed to generate PDF. Please try again."
             showExportAlert = true
+            print("✅ Step 7h: Error alert shown")
         }
+
+        print("✅ Step 8: exportPDF() completed successfully")
     }
 }
 
