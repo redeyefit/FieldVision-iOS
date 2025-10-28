@@ -1,0 +1,567 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		99DDFAB62E9A2B6700ED0C6E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99DDFA9E2E9A2B6600ED0C6E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 99DDFAA52E9A2B6600ED0C6E;
+			remoteInfo = FieldVision;
+		};
+		99DDFAC02E9A2B6700ED0C6E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 99DDFA9E2E9A2B6600ED0C6E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 99DDFAA52E9A2B6600ED0C6E;
+			remoteInfo = FieldVision;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		99DDFAA62E9A2B6600ED0C6E /* FieldVision.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FieldVision.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		99DDFAB52E9A2B6700ED0C6E /* FieldVisionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FieldVisionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		99DDFABF2E9A2B6700ED0C6E /* FieldVisionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FieldVisionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		99DDFAA82E9A2B6600ED0C6E /* FieldVision */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FieldVision;
+			sourceTree = "<group>";
+		};
+		99DDFAB82E9A2B6700ED0C6E /* FieldVisionTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FieldVisionTests;
+			sourceTree = "<group>";
+		};
+		99DDFAC22E9A2B6700ED0C6E /* FieldVisionUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FieldVisionUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		99DDFAA32E9A2B6600ED0C6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		99DDFAB22E9A2B6700ED0C6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		99DDFABC2E9A2B6700ED0C6E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		99DDFA9D2E9A2B6600ED0C6E = {
+			isa = PBXGroup;
+			children = (
+				99DDFAA82E9A2B6600ED0C6E /* FieldVision */,
+				99DDFAB82E9A2B6700ED0C6E /* FieldVisionTests */,
+				99DDFAC22E9A2B6700ED0C6E /* FieldVisionUITests */,
+				99DDFAA72E9A2B6600ED0C6E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		99DDFAA72E9A2B6600ED0C6E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				99DDFAA62E9A2B6600ED0C6E /* FieldVision.app */,
+				99DDFAB52E9A2B6700ED0C6E /* FieldVisionTests.xctest */,
+				99DDFABF2E9A2B6700ED0C6E /* FieldVisionUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		99DDFAA52E9A2B6600ED0C6E /* FieldVision */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 99DDFAC92E9A2B6700ED0C6E /* Build configuration list for PBXNativeTarget "FieldVision" */;
+			buildPhases = (
+				99DDFAA22E9A2B6600ED0C6E /* Sources */,
+				99DDFAA32E9A2B6600ED0C6E /* Frameworks */,
+				99DDFAA42E9A2B6600ED0C6E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				99DDFAA82E9A2B6600ED0C6E /* FieldVision */,
+			);
+			name = FieldVision;
+			packageProductDependencies = (
+			);
+			productName = FieldVision;
+			productReference = 99DDFAA62E9A2B6600ED0C6E /* FieldVision.app */;
+			productType = "com.apple.product-type.application";
+		};
+		99DDFAB42E9A2B6700ED0C6E /* FieldVisionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 99DDFACC2E9A2B6700ED0C6E /* Build configuration list for PBXNativeTarget "FieldVisionTests" */;
+			buildPhases = (
+				99DDFAB12E9A2B6700ED0C6E /* Sources */,
+				99DDFAB22E9A2B6700ED0C6E /* Frameworks */,
+				99DDFAB32E9A2B6700ED0C6E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				99DDFAB72E9A2B6700ED0C6E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				99DDFAB82E9A2B6700ED0C6E /* FieldVisionTests */,
+			);
+			name = FieldVisionTests;
+			packageProductDependencies = (
+			);
+			productName = FieldVisionTests;
+			productReference = 99DDFAB52E9A2B6700ED0C6E /* FieldVisionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		99DDFABE2E9A2B6700ED0C6E /* FieldVisionUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 99DDFACF2E9A2B6700ED0C6E /* Build configuration list for PBXNativeTarget "FieldVisionUITests" */;
+			buildPhases = (
+				99DDFABB2E9A2B6700ED0C6E /* Sources */,
+				99DDFABC2E9A2B6700ED0C6E /* Frameworks */,
+				99DDFABD2E9A2B6700ED0C6E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				99DDFAC12E9A2B6700ED0C6E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				99DDFAC22E9A2B6700ED0C6E /* FieldVisionUITests */,
+			);
+			name = FieldVisionUITests;
+			packageProductDependencies = (
+			);
+			productName = FieldVisionUITests;
+			productReference = 99DDFABF2E9A2B6700ED0C6E /* FieldVisionUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		99DDFA9E2E9A2B6600ED0C6E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1630;
+				LastUpgradeCheck = 1630;
+				TargetAttributes = {
+					99DDFAA52E9A2B6600ED0C6E = {
+						CreatedOnToolsVersion = 16.3;
+					};
+					99DDFAB42E9A2B6700ED0C6E = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 99DDFAA52E9A2B6600ED0C6E;
+					};
+					99DDFABE2E9A2B6700ED0C6E = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 99DDFAA52E9A2B6600ED0C6E;
+					};
+				};
+			};
+			buildConfigurationList = 99DDFAA12E9A2B6600ED0C6E /* Build configuration list for PBXProject "FieldVision" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 99DDFA9D2E9A2B6600ED0C6E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 99DDFAA72E9A2B6600ED0C6E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				99DDFAA52E9A2B6600ED0C6E /* FieldVision */,
+				99DDFAB42E9A2B6700ED0C6E /* FieldVisionTests */,
+				99DDFABE2E9A2B6700ED0C6E /* FieldVisionUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		99DDFAA42E9A2B6600ED0C6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		99DDFAB32E9A2B6700ED0C6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		99DDFABD2E9A2B6700ED0C6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		99DDFAA22E9A2B6600ED0C6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		99DDFAB12E9A2B6700ED0C6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		99DDFABB2E9A2B6700ED0C6E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		99DDFAB72E9A2B6700ED0C6E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 99DDFAA52E9A2B6600ED0C6E /* FieldVision */;
+			targetProxy = 99DDFAB62E9A2B6700ED0C6E /* PBXContainerItemProxy */;
+		};
+		99DDFAC12E9A2B6700ED0C6E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 99DDFAA52E9A2B6600ED0C6E /* FieldVision */;
+			targetProxy = 99DDFAC02E9A2B6700ED0C6E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		99DDFAC72E9A2B6700ED0C6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = XP6GBSQAGL;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		99DDFAC82E9A2B6700ED0C6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = XP6GBSQAGL;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		99DDFACA2E9A2B6700ED0C6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XP6GBSQAGL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "FieldVision needs camera access to record site videos";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "FieldVision needs to accessto your photos to add them to daily logs";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fernandez.FieldVision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		99DDFACB2E9A2B6700ED0C6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XP6GBSQAGL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "FieldVision needs camera access to record site videos";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "FieldVision needs to accessto your photos to add them to daily logs";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fernandez.FieldVision;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		99DDFACD2E9A2B6700ED0C6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XP6GBSQAGL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fernandez.FieldVisionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FieldVision.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FieldVision";
+			};
+			name = Debug;
+		};
+		99DDFACE2E9A2B6700ED0C6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XP6GBSQAGL;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fernandez.FieldVisionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FieldVision.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FieldVision";
+			};
+			name = Release;
+		};
+		99DDFAD02E9A2B6700ED0C6E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XP6GBSQAGL;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fernandez.FieldVisionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FieldVision;
+			};
+			name = Debug;
+		};
+		99DDFAD12E9A2B6700ED0C6E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XP6GBSQAGL;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = fernandez.FieldVisionUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FieldVision;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		99DDFAA12E9A2B6600ED0C6E /* Build configuration list for PBXProject "FieldVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99DDFAC72E9A2B6700ED0C6E /* Debug */,
+				99DDFAC82E9A2B6700ED0C6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		99DDFAC92E9A2B6700ED0C6E /* Build configuration list for PBXNativeTarget "FieldVision" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99DDFACA2E9A2B6700ED0C6E /* Debug */,
+				99DDFACB2E9A2B6700ED0C6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		99DDFACC2E9A2B6700ED0C6E /* Build configuration list for PBXNativeTarget "FieldVisionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99DDFACD2E9A2B6700ED0C6E /* Debug */,
+				99DDFACE2E9A2B6700ED0C6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		99DDFACF2E9A2B6700ED0C6E /* Build configuration list for PBXNativeTarget "FieldVisionUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99DDFAD02E9A2B6700ED0C6E /* Debug */,
+				99DDFAD12E9A2B6700ED0C6E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 99DDFA9E2E9A2B6600ED0C6E /* Project object */;
+}
