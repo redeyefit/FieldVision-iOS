@@ -54,7 +54,36 @@ class AnthropicService {
         
         print("📤 Sending \(compressedImages.count) images to Claude")
         print("📊 Total payload size: \(compressedImages.reduce(0) { $0 + $1.count } / 1024)KB")
-        
+
+        // DEBUG: Log context being passed
+        print("\n🔍 ═══════════════════════════════════════════════════════")
+        print("🔍 DEBUG: AI Request Context Details")
+        print("🔍 ═══════════════════════════════════════════════════════")
+        print("📋 Existing Conditions: \(existingConditions?.isEmpty == false ? "\(existingConditions!.count) chars" : "EMPTY")")
+        print("📋 Scope of Work: \(scopeOfWork?.isEmpty == false ? "\(scopeOfWork!.count) chars" : "EMPTY")")
+        print("📅 Schedule activities: \(schedule.count)")
+        print("📊 Previous reports: \(previousReports.count)")
+        print("📸 Total frames: \(frames.count)")
+        print("📸 Baseline photos: \(baselinePhotos?.count ?? 0)")
+
+        // Print first 200 chars of scope to verify it's being passed
+        if let scopeOfWork = scopeOfWork, !scopeOfWork.isEmpty {
+            let preview = String(scopeOfWork.prefix(200))
+            print("\n📄 Scope of Work Preview:")
+            print("   \(preview)...")
+        } else {
+            print("\n⚠️ NO SCOPE OF WORK PROVIDED")
+        }
+
+        // Print first 200 chars of existing conditions
+        if let existingConditions = existingConditions, !existingConditions.isEmpty {
+            let preview = String(existingConditions.prefix(200))
+            print("\n📄 Existing Conditions Preview:")
+            print("   \(preview)...")
+        } else {
+            print("\n⚠️ NO EXISTING CONDITIONS PROVIDED")
+        }
+
         // Build the prompt with history and project context
         let prompt = constructionPrompt(
             projectName: projectName,
@@ -64,6 +93,15 @@ class AnthropicService {
             scopeOfWork: scopeOfWork,
             schedule: schedule
         )
+
+        // DEBUG: Print the FULL prompt being sent (first 1500 chars)
+        print("\n📤 ═══════════════════════════════════════════════════════")
+        print("📤 FULL PROMPT PREVIEW (first 1500 chars):")
+        print("📤 ═══════════════════════════════════════════════════════")
+        print(String(prompt.prefix(1500)))
+        print("📤 ...")
+        print("📤 [Total prompt length: \(prompt.count) chars]")
+        print("📤 ═══════════════════════════════════════════════════════\n")
         
         // Create the request
         var request = URLRequest(url: URL(string: endpoint)!)
