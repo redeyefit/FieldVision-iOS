@@ -366,22 +366,16 @@ class AnthropicService {
         - NEVER state definitively about hidden work, interior conditions, or unseen details
         - If photos don't show enough detail: "Insufficient detail to verify [item]"
 
-        Code Compliance Reporting:
-        - ONLY reference code requirements when you can ACTUALLY SEE the relevant work
-        - If photos don't show enough to verify code compliance: "⚠️ Cannot verify [requirement] from available photos"
-        - Use qualified statements: "visible framing appears to meet", "observed work suggests compliance with"
-        - Never claim compliance for hidden work (behind walls, under floors, concealed systems)
-
         Examples of GOOD vs BAD responses:
 
         ❌ BAD: "Steel moment frames and structural reinforcement installation complete per specifications"
-        ✅ GOOD: "New framing observed with structural support posts visible. Full structural compliance cannot be verified from exterior photos."
+        ✅ GOOD: "New framing observed with structural support posts visible. ⚠️ Cannot verify full structural details from exterior photos."
 
-        ❌ BAD: "Vapor barrier installation proper per IRC R702.7"
-        ✅ GOOD: "Plastic sheeting visible on some wall sections. ⚠️ Cannot verify R-value, installation method, or full IRC R702.7 compliance from available photos."
+        ❌ BAD: "Insulation installation complete and properly installed"
+        ✅ GOOD: "Some insulation material visible in wall cavities. ⚠️ Cannot verify installation method or coverage from available photos."
 
-        ❌ BAD: "Electrical rough-in complete with proper AFCI/GFCI protection"
-        ✅ GOOD: "Electrical conduit and boxes visible in open walls. ⚠️ Cannot verify circuit protection, wire sizing, or NEC compliance without panel inspection."
+        ❌ BAD: "Electrical rough-in complete with proper wiring"
+        ✅ GOOD: "Electrical conduit and boxes visible in open walls. ⚠️ Cannot verify complete wiring without access to all areas."
 
         ❌ BAD: "Foundation waterproofing and drainage system installed correctly"
         ✅ GOOD: "Foundation walls visible. ⚠️ Waterproofing and drainage systems not visible in photos."

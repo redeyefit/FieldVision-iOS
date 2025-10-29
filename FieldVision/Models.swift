@@ -26,11 +26,6 @@ final class Project {
     // Schedule information
     var schedulePDFData: Data?
 
-    // Residential code compliance
-    var jurisdiction: String
-    var dwellingType: String
-    var codeRequirements: String
-
     // Store baseline photos as concatenated Data with separator
     private var baselinePhotoDataBlob: Data?
 
@@ -54,9 +49,6 @@ final class Project {
         self.scopeOfWork = scopeOfWork
         self.contractPDFData = nil
         self.schedulePDFData = nil
-        self.jurisdiction = ""
-        self.dwellingType = ""
-        self.codeRequirements = ""
         self.baselinePhotoDataBlob = nil
         self.logs = []
         self.reports = []
