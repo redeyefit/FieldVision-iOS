@@ -244,10 +244,12 @@ class AnthropicService {
             projectContext += "\n\nSCOPE OF WORK (What we're building/changing):\n\(scopeOfWork)\n"
         }
 
-        // Build schedule section
+        // Build schedule section with EXPLICIT DATE CALCULATIONS
         var scheduleSection = ""
         if !schedule.isEmpty {
+            let todayFormatted = today.formatted(date: .abbreviated, time: .omitted)
             scheduleSection = "\n\nPROJECT SCHEDULE:\n"
+            scheduleSection += "TODAY'S DATE: \(todayFormatted)\n"
 
             // Separate activities by status
             var activeActivities: [ScheduleActivity] = []
@@ -259,7 +261,6 @@ class AnthropicService {
                 let startDay = Calendar.current.startOfDay(for: activity.startDate)
                 let endDay = Calendar.current.startOfDay(for: activity.endDate)
                 let daysUntilStart = Calendar.current.dateComponents([.day], from: today, to: startDay).day ?? 0
-                let daysSinceStart = Calendar.current.dateComponents([.day], from: startDay, to: today).day ?? 0
 
                 switch activity.status {
                 case .inProgress:
@@ -277,11 +278,37 @@ class AnthropicService {
 
             // Active activities (should be happening NOW)
             if !activeActivities.isEmpty {
-                scheduleSection += "\n🔴 ACTIVE NOW (should be in progress today):\n"
+                scheduleSection += "\n🔴 ACTIVE NOW (should be in progress today - \(todayFormatted)):\n"
                 for activity in activeActivities {
                     let startDay = Calendar.current.startOfDay(for: activity.startDate)
-                    let daysSinceStart = Calendar.current.dateComponents([.day], from: startDay, to: today).day ?? 0
-                    scheduleSection += "  - \(activity.activityName) (\(activity.trade)): \(activity.startDate.formatted(date: .abbreviated, time: .omitted)) - \(activity.endDate.formatted(date: .abbreviated, time: .omitted)) (\(activity.duration) workdays) - Day \(daysSinceStart + 1) of \(activity.duration)\n"
+                    let endDay = Calendar.current.startOfDay(for: activity.endDate)
+
+                    // Calculate days into task (from start to today)
+                    let daysIntoTask = Calendar.current.dateComponents([.day], from: startDay, to: today).day ?? 0
+
+                    // Calculate days remaining (from today to end) - KEY CALCULATION
+                    let daysRemaining = Calendar.current.dateComponents([.day], from: today, to: endDay).day ?? 0
+
+                    let startFormatted = activity.startDate.formatted(date: .abbreviated, time: .omitted)
+                    let endFormatted = activity.endDate.formatted(date: .abbreviated, time: .omitted)
+
+                    // Determine schedule status
+                    let scheduleStatus: String
+                    if today <= endDay {
+                        scheduleStatus = "✅ ON SCHEDULE"
+                    } else {
+                        let daysOverdue = abs(daysRemaining)
+                        scheduleStatus = "🔴 BEHIND SCHEDULE - \(daysOverdue) days overdue"
+                    }
+
+                    scheduleSection += """
+
+                      Activity: \(activity.activityName) (\(activity.trade))
+                      Dates: \(startFormatted) to \(endFormatted) (\(activity.duration) workdays)
+                      Status: Today (\(todayFormatted)) is day \(daysIntoTask + 1) of \(activity.duration). \(daysRemaining) days remaining until \(endFormatted).
+                      Schedule Status: \(scheduleStatus)
+
+                    """
                 }
             }
 
@@ -289,7 +316,17 @@ class AnthropicService {
             if !overdueActivities.isEmpty {
                 scheduleSection += "\n⚠️ OVERDUE (should be complete but marked incomplete):\n"
                 for activity in overdueActivities {
-                    scheduleSection += "  - \(activity.activityName) (\(activity.trade)): Due \(activity.endDate.formatted(date: .abbreviated, time: .omitted))\n"
+                    let endDay = Calendar.current.startOfDay(for: activity.endDate)
+                    let daysOverdue = Calendar.current.dateComponents([.day], from: endDay, to: today).day ?? 0
+                    let endFormatted = activity.endDate.formatted(date: .abbreviated, time: .omitted)
+
+                    scheduleSection += """
+
+                      Activity: \(activity.activityName) (\(activity.trade))
+                      Due Date: \(endFormatted)
+                      Status: \(daysOverdue) days overdue (was due \(endFormatted), today is \(todayFormatted))
+
+                    """
                 }
             }
 
@@ -297,8 +334,18 @@ class AnthropicService {
             if !upcomingActivities.isEmpty {
                 scheduleSection += "\n📅 STARTING SOON (within 7 days):\n"
                 for activity in upcomingActivities {
-                    let daysUntilStart = Calendar.current.dateComponents([.day], from: today, to: Calendar.current.startOfDay(for: activity.startDate)).day ?? 0
-                    scheduleSection += "  - \(activity.activityName) (\(activity.trade)): Starts in \(daysUntilStart) days (\(activity.startDate.formatted(date: .abbreviated, time: .omitted)))\n"
+                    let startDay = Calendar.current.startOfDay(for: activity.startDate)
+                    let daysUntilStart = Calendar.current.dateComponents([.day], from: today, to: startDay).day ?? 0
+                    let startFormatted = activity.startDate.formatted(date: .abbreviated, time: .omitted)
+                    let endFormatted = activity.endDate.formatted(date: .abbreviated, time: .omitted)
+
+                    scheduleSection += """
+
+                      Activity: \(activity.activityName) (\(activity.trade))
+                      Dates: \(startFormatted) to \(endFormatted) (\(activity.duration) workdays)
+                      Status: Starts in \(daysUntilStart) days
+
+                    """
                 }
             }
 
@@ -412,11 +459,14 @@ class AnthropicService {
            - Are workers doing work that's IN SCOPE or something different?
            - Don't describe work that's not part of the scope (unless it's a concern)
 
-        2. **COMPARE to Schedule:**
-           - Are the right activities happening at the right time?
-           - If framing is scheduled but you see plumbing: 🔴 SCHEDULE DEVIATION
-           - If activity is Day 3 of 7: expect ~40-50% complete for that activity
-           - Flag work that's ahead, on track, or behind based on timeline
+        2. **COMPARE to Schedule - CRITICAL DATE LOGIC:**
+           - Read the "DAYS REMAINING" number in the schedule section
+           - If "days remaining" is POSITIVE (e.g., 5 days remaining): Activity is ON SCHEDULE ✅
+           - If "days remaining" is NEGATIVE (e.g., -3 days remaining): Activity is BEHIND SCHEDULE 🔴
+           - The schedule section shows "Schedule Status: ✅ ON SCHEDULE" or "🔴 BEHIND SCHEDULE"
+           - TRUST THE SCHEDULE STATUS PROVIDED - do not recalculate dates yourself
+           - Are the right activities happening? If framing is scheduled but you see plumbing: 🔴 SCHEDULE DEVIATION
+           - Assess progress percentage based on days into task vs total duration
 
         3. **COMPARE to Previous Visit:**
            - What CHANGED since the last report?
@@ -449,26 +499,44 @@ class AnthropicService {
         \(scheduleSection.isEmpty ? "" : """
 
         SCHEDULE COMPLIANCE:
-        For each activity that should be active today or recently completed, provide:
-        - Activity name and trade
-        - Scheduled dates (start - end)
-        - Progress: "Day X of Y" (e.g., "Day 3 of 7")
-        - Expected % complete at this point (based on days elapsed)
-        - Actual % complete observed in photos
-        - Status: 🟢 On Schedule / 🟡 Minor Delay / 🔴 Behind Schedule / ⚠️ Not Started
-        - Detailed explanation of schedule status
 
-        Example format:
-        - Demo (Demolition): Sep 30 - Oct 6, Day 3 of 7. Expected 43% complete. Observed: 40% complete. 🟢 On Schedule - proceeding as planned with proper safety protocols.
-        - Rough Framing (Framing): Oct 10 - Oct 25, starts in 7 days. Site preparation observed, materials staged. 🟢 Ready to start on schedule.
+        CRITICAL: Use the "Schedule Status" from the PROJECT SCHEDULE section above.
+        Each activity shows "✅ ON SCHEDULE" or "🔴 BEHIND SCHEDULE" - TRUST THESE.
+
+        For each ACTIVE activity, report:
+        1. Activity name and trade
+        2. Copy the dates and status from PROJECT SCHEDULE section
+        3. Days remaining (from schedule section above)
+        4. Actual work observed in photos
+        5. Alignment: Does visible work match the scheduled activity?
+
+        Examples:
+
+        ✅ ON SCHEDULE Example:
+        - Framing (Rough Framing): Oct 1 - Oct 15
+          Schedule: Day 5 of 15, 10 days remaining. ✅ ON SCHEDULE
+          Observed: Wall framing in progress, studs being installed on first floor
+          Assessment: 🟢 Work aligns with schedule, progressing as planned
+
+        🔴 BEHIND SCHEDULE Example:
+        - Electrical (Electrical): Oct 1 - Oct 10
+          Schedule: Day 12 of 10, -2 days remaining. 🔴 BEHIND SCHEDULE - 2 days overdue
+          Observed: Electrical rough-in still in progress, conduit installation ongoing
+          Assessment: 🔴 Activity is overdue. Recommend expediting to prevent downstream delays.
+
+        ⚠️ DEVIATION Example:
+        - Plumbing (Plumbing): Oct 15 - Oct 22, starts in 7 days
+          Schedule: Not yet scheduled to start
+          Observed: ⚠️ Plumbing work already in progress (early start)
+          Assessment: 🟡 Activity started ahead of schedule - verify this doesn't conflict with other trades
 
         For OVERDUE activities:
-        - Clearly state how many days overdue
-        - Explain visible status and concerns
+        - State how many days overdue (from schedule section)
+        - Assess whether work is being expedited or falling further behind
 
-        For activities NOT STARTED when scheduled:
-        - Flag as ⚠️ Not Started
-        - Note any visible obstacles or reasons for delay
+        For NOT STARTED activities:
+        - If photos show NO work for scheduled activity: ⚠️ Not Started - behind schedule
+        - Note any obstacles visible in photos
         """)
 
         OBSERVATIONS:
