@@ -17,8 +17,11 @@ struct ReportDetailView: View {
     @State private var showingDeleteAlert = false
     @State private var isEditing = false
     @State private var isExporting = false
-    @State private var exportMessage: String?
-    @State private var showExportAlert = false
+    @State private var exportedPDFURL: URL?
+    @State private var showExportOptions = false
+    @State private var showShareSheet = false
+    @State private var exportErrorMessage: String?
+    @State private var showErrorAlert = false
     
     var body: some View {
         ScrollView {
@@ -61,10 +64,28 @@ struct ReportDetailView: View {
         } message: {
             Text("Are you sure you want to delete this report? This action cannot be undone.")
         }
-        .alert("PDF Exported", isPresented: $showExportAlert) {
+        .alert("Export Error", isPresented: $showErrorAlert) {
             Button("OK", role: .cancel) { }
         } message: {
-            Text(exportMessage ?? "PDF export status")
+            Text(exportErrorMessage ?? "Failed to export PDF")
+        }
+        .confirmationDialog("PDF Exported Successfully", isPresented: $showExportOptions, titleVisibility: .visible) {
+            Button("Share") {
+                sharePDF()
+            }
+            Button("View in Files") {
+                showFilesInfo()
+            }
+            Button("Done", role: .cancel) { }
+        } message: {
+            if let url = exportedPDFURL {
+                Text(url.lastPathComponent)
+            }
+        }
+        .sheet(isPresented: $showShareSheet) {
+            if let pdfURL = exportedPDFURL {
+                ShareSheet(items: [pdfURL])
+            }
         }
     }
     
@@ -209,8 +230,8 @@ struct ReportDetailView: View {
         // Get user settings
         guard let userSettings = settings.first else {
             print("❌ Step 2b: No user settings found")
-            exportMessage = "User settings not found. Please configure settings first."
-            showExportAlert = true
+            exportErrorMessage = "User settings not found. Please configure settings first."
+            showErrorAlert = true
             return
         }
         print("✅ Step 2c: User settings found - userName: \(userSettings.userName)")
@@ -219,8 +240,8 @@ struct ReportDetailView: View {
         // Get project (report should have a relationship to project)
         guard let project = report.project else {
             print("❌ Step 3a: No project relationship found")
-            exportMessage = "Project information not found for this report."
-            showExportAlert = true
+            exportErrorMessage = "Project information not found for this report."
+            showErrorAlert = true
             return
         }
         print("✅ Step 3b: Project found - name: \(project.name)")
@@ -251,24 +272,48 @@ struct ReportDetailView: View {
             print("✅ Step 7a: PDF URL exists")
             print("✅ PDF saved to: \(pdfURL.path)")
 
-            print("📄 Step 7b: Getting filename...")
-            let fileName = pdfURL.lastPathComponent
-            print("✅ Step 7c: Filename: \(fileName)")
+            print("📄 Step 7b: Storing PDF URL...")
+            exportedPDFURL = pdfURL
 
-            print("📄 Step 7d: Setting export message...")
-            exportMessage = "PDF saved successfully to:\n\n\(fileName)\n\nYou can access it in:\nFiles app > On My iPhone > FieldVision > DailyReports"
-
-            print("📄 Step 7e: Showing alert...")
-            showExportAlert = true
-            print("✅ Step 7f: Alert shown")
+            print("📄 Step 7c: Showing export options...")
+            showExportOptions = true
+            print("✅ Step 7d: Options dialog shown")
         } else {
-            print("❌ Step 7g: PDF URL is nil")
-            exportMessage = "Failed to generate PDF. Please try again."
-            showExportAlert = true
-            print("✅ Step 7h: Error alert shown")
+            print("❌ Step 7e: PDF URL is nil")
+            exportErrorMessage = "Failed to generate PDF. Please try again."
+            showErrorAlert = true
+            print("✅ Step 7f: Error alert shown")
         }
 
         print("✅ Step 8: exportPDF() completed successfully")
+    }
+
+    func sharePDF() {
+        print("📤 Share PDF action triggered")
+        showShareSheet = true
+    }
+
+    func showFilesInfo() {
+        print("📂 View in Files action triggered")
+        exportErrorMessage = "To view your PDF:\n\n1. Open Files app\n2. Go to 'On My iPhone'\n3. Open 'FieldVision' folder\n4. Open 'DailyReports' folder\n\nYour PDF is saved there!"
+        showErrorAlert = true
+    }
+}
+
+// MARK: - Share Sheet
+struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(
+            activityItems: items,
+            applicationActivities: nil
+        )
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
+        // No update needed
     }
 }
 
