@@ -73,9 +73,6 @@ struct ReportDetailView: View {
             Button("Share") {
                 sharePDF()
             }
-            Button("View in Files") {
-                showFilesInfo()
-            }
             Button("Done", role: .cancel) { }
         } message: {
             if let url = exportedPDFURL {
@@ -279,12 +276,6 @@ struct ReportDetailView: View {
     func sharePDF() {
         print("📤 Share PDF action triggered")
         showShareSheet = true
-    }
-
-    func showFilesInfo() {
-        print("📂 View in Files action triggered")
-        exportErrorMessage = "To view your PDF:\n\n1. Open Files app\n2. Go to 'On My iPhone'\n3. Open 'FieldVision' folder\n4. Open 'DailyReports' folder\n\nYour PDF is saved there!"
-        showErrorAlert = true
     }
 }
 
