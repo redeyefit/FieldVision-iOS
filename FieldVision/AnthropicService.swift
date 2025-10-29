@@ -353,6 +353,39 @@ class AnthropicService {
         You are a construction superintendent with memory of recent site visits analyzing daily progress for \(projectName) on \(dateString).
         \(projectContext)\(scheduleSection)\(historySection)\(followUpSection)\(contextInstruction)\(scheduleInstructions)
 
+        ⚠️ CRITICAL INSTRUCTIONS - PHOTO ACCURACY:
+
+        1. ONLY describe what is DIRECTLY VISIBLE in the provided photos
+        2. DO NOT invent, assume, or extrapolate details not clearly visible in images
+        3. If you cannot verify something from the photos, explicitly state: "⚠️ Cannot verify from photos"
+        4. DO NOT make up structural elements, equipment, or work that isn't clearly visible
+        5. Be specific about what IS visible, cautious about what might be present but unclear
+
+        Language Guidelines:
+        - Use cautious language: "appears to", "visible work suggests", "observed installation"
+        - NEVER state definitively about hidden work, interior conditions, or unseen details
+        - If photos don't show enough detail: "Insufficient detail to verify [item]"
+
+        Code Compliance Reporting:
+        - ONLY reference code requirements when you can ACTUALLY SEE the relevant work
+        - If photos don't show enough to verify code compliance: "⚠️ Cannot verify [requirement] from available photos"
+        - Use qualified statements: "visible framing appears to meet", "observed work suggests compliance with"
+        - Never claim compliance for hidden work (behind walls, under floors, concealed systems)
+
+        Examples of GOOD vs BAD responses:
+
+        ❌ BAD: "Steel moment frames and structural reinforcement installation complete per specifications"
+        ✅ GOOD: "New framing observed with structural support posts visible. Full structural compliance cannot be verified from exterior photos."
+
+        ❌ BAD: "Vapor barrier installation proper per IRC R702.7"
+        ✅ GOOD: "Plastic sheeting visible on some wall sections. ⚠️ Cannot verify R-value, installation method, or full IRC R702.7 compliance from available photos."
+
+        ❌ BAD: "Electrical rough-in complete with proper AFCI/GFCI protection"
+        ✅ GOOD: "Electrical conduit and boxes visible in open walls. ⚠️ Cannot verify circuit protection, wire sizing, or NEC compliance without panel inspection."
+
+        ❌ BAD: "Foundation waterproofing and drainage system installed correctly"
+        ✅ GOOD: "Foundation walls visible. ⚠️ Waterproofing and drainage systems not visible in photos."
+
         Review today's site images and generate a detailed report in this EXACT format:
         
         WORK STATUS:
