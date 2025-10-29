@@ -160,29 +160,17 @@ struct ReportDetailView: View {
     private var actionButtons: some View {
         VStack(spacing: 12) {
             Button {
-                shareReport()
-            } label: {
-                Label("Share Report", systemImage: "square.and.arrow.up")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue.opacity(0.3))
-                    .foregroundStyle(.blue)
-                    .cornerRadius(12)
-            }
-            .disabled(true)
-            
-            Button {
-                print("🔵 Export PDF button tapped")
+                print("🔵 Share Report button tapped")
                 exportPDF()
-                print("🔵 Export PDF button action completed")
+                print("🔵 Share Report button action completed")
             } label: {
                 HStack {
                     if isExporting {
                         ProgressView()
                             .scaleEffect(0.8)
-                        Text("Generating PDF...")
+                        Text("Preparing Report...")
                     } else {
-                        Label("Export PDF", systemImage: "doc.fill")
+                        Label("Share Report", systemImage: "square.and.arrow.up")
                     }
                 }
                 .frame(maxWidth: .infinity)
