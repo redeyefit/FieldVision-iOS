@@ -325,33 +325,18 @@ class AnthropicService {
             }
         }
         
-        let contextInstruction = projectContext.isEmpty ? "" : """
-
-        IMPORTANT: Use the project context to distinguish between:
-        - EXISTING work (what was already there before this project started)
-        - NEW work (construction/changes being performed as part of this project)
-        Only report on progress related to the NEW work defined in the scope.
-        """
-
-        let scheduleInstructions = scheduleSection.isEmpty ? "" : """
-
-        SCHEDULE COMPLIANCE ANALYSIS:
-        For each activity that should be ACTIVE NOW or OVERDUE:
-        - Check if photos show work matching the scheduled activity
-        - If activity is scheduled but NO matching work visible: ⚠️ BEHIND SCHEDULE
-        - If activity is visible and on schedule: ✅ ON SCHEDULE
-        - If different work is happening (wrong activity): 🔴 SCHEDULE DEVIATION
-        - For active activities, assess if progress matches expected timeline (e.g., Day 1 of 7 should show ~14% complete)
-
-        Include a SCHEDULE COMPLIANCE section in your report showing:
-        - Which scheduled activities are visible in photos
-        - Any schedule deviations or concerns
-        - Whether work matches the expected timeline
-        """
-
+        // Build the structured prompt with PROJECT CONTEXT first, then TODAY'S ANALYSIS
         return """
-        You are a construction superintendent with memory of recent site visits analyzing daily progress for \(projectName) on \(dateString).
-        \(projectContext)\(scheduleSection)\(historySection)\(followUpSection)\(contextInstruction)\(scheduleInstructions)
+        You are an expert construction superintendent analyzing daily progress for \(projectName) on \(dateString).
+
+        ═══════════════════════════════════════════════════════════
+        PROJECT CONTEXT
+        ═══════════════════════════════════════════════════════════
+        \(projectContext.isEmpty ? "\nNo project scope information provided.\n" : projectContext)\(scheduleSection)\(historySection)\(followUpSection)
+
+        ═══════════════════════════════════════════════════════════
+        TODAY'S SITE VISIT ANALYSIS - \(dateString)
+        ═══════════════════════════════════════════════════════════
 
         ⚠️ CRITICAL INSTRUCTIONS - PHOTO ACCURACY:
 
@@ -379,6 +364,33 @@ class AnthropicService {
 
         ❌ BAD: "Foundation waterproofing and drainage system installed correctly"
         ✅ GOOD: "Foundation walls visible. ⚠️ Waterproofing and drainage systems not visible in photos."
+
+        🔍 GROUNDING ANALYSIS - COMPARE TO PROJECT FACTS:
+
+        Your analysis MUST be grounded in the project context provided above:
+
+        1. **COMPARE to Scope of Work:**
+           - Is the visible work part of the defined scope?
+           - Are workers doing work that's IN SCOPE or something different?
+           - Don't describe work that's not part of the scope (unless it's a concern)
+
+        2. **COMPARE to Schedule:**
+           - Are the right activities happening at the right time?
+           - If framing is scheduled but you see plumbing: 🔴 SCHEDULE DEVIATION
+           - If activity is Day 3 of 7: expect ~40-50% complete for that activity
+           - Flag work that's ahead, on track, or behind based on timeline
+
+        3. **COMPARE to Previous Visit:**
+           - What CHANGED since the last report?
+           - Were open items from yesterday addressed?
+           - Did promised work actually happen?
+           - Is progress accelerating, steady, or slowing?
+
+        4. **COMPARE to Existing Conditions:**
+           - Distinguish between EXISTING work (was already there) vs NEW work (this project)
+           - Don't report existing conditions as new progress
+
+        If project context is missing (no scope/schedule): acknowledge this and describe what's visible without making assumptions about correctness.
 
         Review today's site images and generate a detailed report in this EXACT format:
         
