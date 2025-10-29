@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 import PDFKit
 import UniformTypeIdentifiers
 
 struct ContractUploadView: View {
     @Environment(\.dismiss) private var dismiss
     @Bindable var project: Project
+    @Query private var settings: [UserSettings]
 
     @State private var showingDocumentPicker = false
     @State private var showingImagePicker = false
@@ -300,134 +302,223 @@ struct ContractUploadView: View {
     private func generateCodeRequirements() {
         isGeneratingCodeRequirements = true
 
-        // Auto-detect jurisdiction from address
+        // Auto-detect jurisdiction from address with focus on Los Angeles
         if project.jurisdiction.isEmpty {
-            // Simple jurisdiction detection based on address
-            let address = project.address.lowercased()
-            if address.contains("california") || address.contains("ca") {
-                project.jurisdiction = "2024 California Residential Code (CRC)"
-            } else if address.contains("texas") || address.contains("tx") {
-                project.jurisdiction = "2021 International Residential Code (IRC)"
-            } else if address.contains("florida") || address.contains("fl") {
-                project.jurisdiction = "2023 Florida Building Code - Residential"
-            } else if address.contains("new york") || address.contains("ny") {
-                project.jurisdiction = "2020 New York State Residential Code"
-            } else {
-                project.jurisdiction = "2021 International Residential Code (IRC)"
-            }
+            project.jurisdiction = detectJurisdiction(from: project.address)
         }
 
-        // TODO: Replace with actual AI generation using Anthropic API
-        // For now, generate comprehensive placeholder requirements
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            project.codeRequirements = generatePlaceholderRequirements(
-                dwellingType: project.dwellingType,
-                jurisdiction: project.jurisdiction,
-                scopeOfWork: project.scopeOfWork
-            )
+        // Check if API key is available
+        guard let apiKey = settings.first?.anthropicKey, !apiKey.isEmpty else {
+            alertMessage = "Please configure your Anthropic API key in Settings first."
+            showingAlert = true
             isGeneratingCodeRequirements = false
-        }
-    }
-
-    private func generatePlaceholderRequirements(dwellingType: String, jurisdiction: String, scopeOfWork: String) -> String {
-        var requirements = """
-        RESIDENTIAL CODE REQUIREMENTS - \(dwellingType)
-        Jurisdiction: \(jurisdiction)
-
-        GENERAL REQUIREMENTS:
-        • All work must comply with current IRC and local amendments
-        • Building permit required for structural, electrical, plumbing, and mechanical work
-        • Inspections required at key stages (foundation, framing, rough-in, final)
-
-        STRUCTURAL (IRC Chapter 3-8):
-        • Foundation must meet R403 requirements for footings and concrete
-        • Floor framing per R502 (joist spacing, spans, blocking)
-        • Wall framing per R602 (stud spacing, headers, bracing)
-        • Roof framing per R802 (rafter/truss design, connections)
-        • Lateral bracing and seismic requirements per local amendments
-
-        ELECTRICAL (IRC Chapter 34/NEC):
-        • All circuits properly sized with AFCI/GFCI protection
-        • Kitchen: 2 small appliance circuits (20A), dedicated circuits for major appliances
-        • Bathroom: Dedicated 20A GFCI circuit
-        • Bedroom: 15A circuits with AFCI protection
-        • Outdoor/wet areas: GFCI protected outlets
-        • Service panel properly sized for load calculations
-
-        PLUMBING (IRC Chapter 25-32):
-        • Water supply: Proper pipe sizing per fixture unit calculations (P2903)
-        • DWV system: Proper trap sizing, venting per P3105
-        • Water heater: TPR valve, drain pan, seismic strapping (P2801)
-        • Fixtures: Proper rough-in dimensions and access
-
-        MECHANICAL/HVAC (IRC Chapter 12-24):
-        • Heating/cooling loads calculated per Manual J
-        • Duct sizing per Manual D
-        • Combustion air for fuel-burning appliances (M1701)
-        • Ventilation requirements per M1505 (whole-house, bath, kitchen)
-
-        ENERGY EFFICIENCY:
-        • Insulation: R-value requirements per climate zone
-        • Windows: U-factor and SHGC requirements
-        • Air sealing per energy code
-        • Ventilation meeting ASHRAE 62.2 requirements
-
-        FIRE SAFETY:
-        • Smoke alarms in all bedrooms, outside sleeping areas, each level (R314)
-        • CO alarms where required (R315)
-        • Egress windows in bedrooms (R310)
-        • Fire-rated assemblies where required
-
-        """
-
-        // Add dwelling-specific requirements
-        if dwellingType.contains("ADU") {
-            requirements += """
-
-            ADU-SPECIFIC REQUIREMENTS:
-            • Setbacks per local zoning ordinances
-            • Maximum size restrictions (typically 1,200 sq ft or 50% of primary)
-            • Parking requirements (typically 1 space, may be waived)
-            • Fire sprinklers if required by local code
-            • Separate utilities or submetered
-            • Separate address if detached
-
-            """
-        } else if dwellingType.contains("Duplex") {
-            requirements += """
-
-            DUPLEX-SPECIFIC REQUIREMENTS:
-            • Fire-rated separation between units (1-hour rated)
-            • Sound attenuation requirements (STC 50 minimum)
-            • Separate utilities metering
-            • Individual HVAC systems
-            • Separate means of egress
-
-            """
+            return
         }
 
-        requirements += """
-        INSPECTION SCHEDULE (Typical):
-        1. Foundation inspection (before concrete pour)
-        2. Rough framing inspection (before covering)
-        3. Rough electrical inspection (before covering)
-        4. Rough plumbing inspection (before covering)
-        5. Rough mechanical inspection (before covering)
-        6. Insulation inspection (before drywall)
-        7. Final inspection (all work complete)
+        // Generate requirements using Anthropic API
+        callAnthropicAPI(
+            apiKey: apiKey,
+            address: project.address,
+            dwellingType: project.dwellingType,
+            jurisdiction: project.jurisdiction,
+            scopeOfWork: project.scopeOfWork
+        )
+    }
 
-        NOTE: This is a general reference. Verify all requirements with local building department.
-        Actual requirements may vary based on specific project conditions.
+    private func detectJurisdiction(from address: String) -> String {
+        let lowerAddress = address.lowercased()
 
-        Next Steps:
-        • Submit plans to building department for permit
-        • Coordinate inspection schedule with trades
-        • Document all code-required items with photos
-        • Track inspection approvals in daily reports
+        // Detect Los Angeles specifically (city or county)
+        if lowerAddress.contains("los angeles") || lowerAddress.contains("la,") ||
+           lowerAddress.contains("hollywood") || lowerAddress.contains("venice") ||
+           lowerAddress.contains("santa monica") || lowerAddress.contains("beverly hills") ||
+           lowerAddress.contains("culver city") || lowerAddress.contains("pasadena") ||
+           lowerAddress.contains("glendale") || lowerAddress.contains("burbank") {
+            return "2023 California Residential Code + LA City/County Amendments"
+        }
+
+        // Detect California cities
+        if lowerAddress.contains("san francisco") || lowerAddress.contains("sf,") {
+            return "2023 California Residential Code + SF Amendments"
+        }
+        if lowerAddress.contains("san diego") {
+            return "2023 California Residential Code + SD Amendments"
+        }
+        if lowerAddress.contains("california") || lowerAddress.contains("ca,") || lowerAddress.contains(", ca") {
+            return "2024 California Residential Code (CRC)"
+        }
+
+        // Other states
+        if lowerAddress.contains("texas") || lowerAddress.contains("tx,") || lowerAddress.contains(", tx") {
+            return "2021 International Residential Code (IRC) - Texas"
+        }
+        if lowerAddress.contains("florida") || lowerAddress.contains("fl,") || lowerAddress.contains(", fl") {
+            return "2023 Florida Building Code - Residential"
+        }
+        if lowerAddress.contains("new york") || lowerAddress.contains("ny,") || lowerAddress.contains(", ny") {
+            return "2020 New York State Residential Code"
+        }
+
+        // Default
+        return "2021 International Residential Code (IRC)"
+    }
+
+    private func callAnthropicAPI(apiKey: String, address: String, dwellingType: String, jurisdiction: String, scopeOfWork: String) {
+        let endpoint = "https://api.anthropic.com/v1/messages"
+
+        guard let url = URL(string: endpoint) else {
+            alertMessage = "Invalid API endpoint"
+            showingAlert = true
+            isGeneratingCodeRequirements = false
+            return
+        }
+
+        // Build the prompt
+        let prompt = """
+        You are a construction code compliance expert specializing in residential building codes.
+
+        Generate comprehensive IRC (International Residential Code) requirements for the following residential project:
+
+        PROJECT DETAILS:
+        - Location: \(address)
+        - Jurisdiction: \(jurisdiction)
+        - Dwelling Type: \(dwellingType)
+        - Scope of Work: \(scopeOfWork.isEmpty ? "General residential construction" : scopeOfWork)
+
+        Please provide detailed code requirements covering:
+
+        1. GENERAL REQUIREMENTS
+           - Permit requirements
+           - Inspection stages
+           - General compliance notes
+
+        2. STRUCTURAL (IRC Chapters 3-8)
+           - Foundation requirements (R403)
+           - Floor framing (R502)
+           - Wall framing (R602)
+           - Roof framing (R802)
+           - Lateral bracing and seismic requirements specific to location
+
+        3. ELECTRICAL (IRC Chapter 34/NEC)
+           - Circuit requirements
+           - AFCI/GFCI protection
+           - Kitchen, bathroom, bedroom requirements
+           - Service panel sizing
+
+        4. PLUMBING (IRC Chapters 25-32)
+           - Water supply sizing
+           - DWV system requirements
+           - Water heater requirements
+           - Fixture rough-in
+
+        5. MECHANICAL/HVAC (IRC Chapters 12-24)
+           - Load calculations
+           - Duct sizing
+           - Ventilation requirements
+
+        6. INSULATION & ENERGY EFFICIENCY
+           - R-value requirements for climate zone
+           - Window requirements
+           - Air sealing
+
+        7. FIRE SAFETY
+           - Smoke alarm placement (R314)
+           - CO alarm requirements (R315)
+           - Egress windows (R310)
+
+        8. DWELLING-SPECIFIC REQUIREMENTS
+           - Specific to \(dwellingType)
+           - Any special local requirements for \(address)
+
+        9. TYPICAL INSPECTION SCHEDULE
+           - Foundation through final
+
+        Format the output clearly with headers and bullet points. Include specific IRC section references.
+        Focus on Los Angeles residential construction requirements if applicable.
         """
 
-        return requirements
+        // Create request
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue(apiKey, forHTTPHeaderField: "x-api-key")
+        request.setValue("2023-06-01", forHTTPHeaderField: "anthropic-version")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let payload: [String: Any] = [
+            "model": "claude-sonnet-4-20250514",
+            "max_tokens": 4000,
+            "messages": [
+                [
+                    "role": "user",
+                    "content": prompt
+                ]
+            ]
+        ]
+
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+        } catch {
+            alertMessage = "Failed to create request: \(error.localizedDescription)"
+            showingAlert = true
+            isGeneratingCodeRequirements = false
+            return
+        }
+
+        print("🚀 Generating IRC requirements with AI...")
+
+        // Make API call
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    alertMessage = "Network error: \(error.localizedDescription)"
+                    showingAlert = true
+                    isGeneratingCodeRequirements = false
+                    return
+                }
+
+                guard let data = data else {
+                    alertMessage = "No data received from API"
+                    showingAlert = true
+                    isGeneratingCodeRequirements = false
+                    return
+                }
+
+                // Parse response
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
+
+                        // Check for API error
+                        if let error = json["error"] as? [String: Any],
+                           let message = error["message"] as? String {
+                            alertMessage = "API Error: \(message)"
+                            showingAlert = true
+                            isGeneratingCodeRequirements = false
+                            return
+                        }
+
+                        // Parse successful response
+                        if let content = json["content"] as? [[String: Any]],
+                           let firstBlock = content.first,
+                           let text = firstBlock["text"] as? String {
+
+                            print("✅ IRC requirements generated successfully!")
+                            project.codeRequirements = text
+                            isGeneratingCodeRequirements = false
+                        } else {
+                            alertMessage = "Failed to parse API response"
+                            showingAlert = true
+                            isGeneratingCodeRequirements = false
+                        }
+                    }
+                } catch {
+                    alertMessage = "Failed to parse response: \(error.localizedDescription)"
+                    showingAlert = true
+                    isGeneratingCodeRequirements = false
+                }
+            }
+        }.resume()
     }
+
 }
 
 // MARK: - Image Picker
