@@ -74,8 +74,8 @@ class PDFGenerator {
                 var currentY: CGFloat = margin
                 var currentPage = 1
 
-                // Helper closure to add a new page
-                let addNewPage = {
+                // Helper function to add a new page (returns new page number)
+                func addNewPage() -> Int {
                     print("📄 Adding new page. Current: \(currentPage), new: \(currentPage + 1)")
                     print("📄 Drawing footer on page \(currentPage) before transitioning...")
                     drawFooter(
@@ -85,9 +85,10 @@ class PDFGenerator {
                         userSettings: userSettings
                     )
                     context.beginPage()
-                    currentPage += 1
+                    let newPage = currentPage + 1
                     currentY = margin
-                    print("📄 New page \(currentPage) started. Y reset to \(currentY). MaxY is \(maxY)")
+                    print("📄 New page \(newPage) started. Y reset to \(currentY). MaxY is \(maxY)")
+                    return newPage
                 }
 
                 // Start first page
@@ -110,7 +111,7 @@ class PDFGenerator {
                 print("\n📚 Rendering full report content...")
                 print("📏 Starting at Y = \(currentY), maxY = \(maxY), space = \(maxY - currentY)pt")
 
-                currentY = drawTextWithPageBreaks(
+                let result = drawTextWithPageBreaks(
                     context: context.cgContext,
                     text: fullText,
                     x: margin,
@@ -119,9 +120,11 @@ class PDFGenerator {
                     fontSize: 11,
                     bold: false,
                     lineSpacing: 1.2,
-                    currentPage: &currentPage,
+                    currentPage: currentPage,
                     addNewPage: addNewPage
                 )
+                currentY = result.finalY
+                currentPage = result.finalPage
 
                 print("\n✅ All content rendered across \(currentPage) pages!")
 
@@ -345,10 +348,11 @@ class PDFGenerator {
         fontSize: CGFloat,
         bold: Bool,
         lineSpacing: CGFloat = 1.0,
-        currentPage: inout Int,
-        addNewPage: () -> Void
-    ) -> CGFloat {
+        currentPage: Int,
+        addNewPage: () -> Int
+    ) -> (finalY: CGFloat, finalPage: Int) {
         var currentY = startY
+        var page = currentPage
         let lines = text.components(separatedBy: .newlines)
 
         print("   📝 Total lines to render: \(lines.count)")
@@ -376,9 +380,9 @@ class PDFGenerator {
             if currentY + lineHeight > maxY {
                 print("   ⚠️ Line \(lineIndex + 1)/\(lines.count) won't fit (Y=\(currentY), lineHeight=\(lineHeight), maxY=\(maxY))")
                 print("   📄 Creating new page and continuing...")
-                addNewPage()
+                page = addNewPage()
                 currentY = margin
-                print("   ✅ Continuing on page \(currentPage) at Y = \(currentY)")
+                print("   ✅ Continuing on page \(page) at Y = \(currentY)")
             }
 
             // Draw the line
@@ -391,12 +395,12 @@ class PDFGenerator {
 
             // Progress indicator every 50 lines
             if (lineIndex + 1) % 50 == 0 {
-                print("   📊 Progress: \(lineIndex + 1)/\(lines.count) lines drawn, page \(currentPage), Y=\(currentY)")
+                print("   📊 Progress: \(lineIndex + 1)/\(lines.count) lines drawn, page \(page), Y=\(currentY)")
             }
         }
 
-        print("   ✅ All \(lines.count) lines rendered on page(s) ending at page \(currentPage)")
-        return currentY
+        print("   ✅ All \(lines.count) lines rendered on page(s) ending at page \(page)")
+        return (currentY, page)
     }
 
     // MARK: - Line Drawing
