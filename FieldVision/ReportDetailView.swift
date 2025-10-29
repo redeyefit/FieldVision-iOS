@@ -18,7 +18,6 @@ struct ReportDetailView: View {
     @State private var isEditing = false
     @State private var isExporting = false
     @State private var exportedPDFURL: URL?
-    @State private var showExportOptions = false
     @State private var showShareSheet = false
     @State private var exportErrorMessage: String?
     @State private var showErrorAlert = false
@@ -68,16 +67,6 @@ struct ReportDetailView: View {
             Button("OK", role: .cancel) { }
         } message: {
             Text(exportErrorMessage ?? "Failed to export PDF")
-        }
-        .confirmationDialog("PDF Exported Successfully", isPresented: $showExportOptions, titleVisibility: .visible) {
-            Button("Share") {
-                sharePDF()
-            }
-            Button("Done", role: .cancel) { }
-        } message: {
-            if let url = exportedPDFURL {
-                Text(url.lastPathComponent)
-            }
         }
         .sheet(isPresented: $showShareSheet) {
             if let pdfURL = exportedPDFURL {
@@ -260,9 +249,9 @@ struct ReportDetailView: View {
             print("📄 Step 7b: Storing PDF URL...")
             exportedPDFURL = pdfURL
 
-            print("📄 Step 7c: Showing export options...")
-            showExportOptions = true
-            print("✅ Step 7d: Options dialog shown")
+            print("📄 Step 7c: Showing share sheet...")
+            showShareSheet = true
+            print("✅ Step 7d: Share sheet shown")
         } else {
             print("❌ Step 7e: PDF URL is nil")
             exportErrorMessage = "Failed to generate PDF. Please try again."
@@ -271,11 +260,6 @@ struct ReportDetailView: View {
         }
 
         print("✅ Step 8: exportPDF() completed successfully")
-    }
-
-    func sharePDF() {
-        print("📤 Share PDF action triggered")
-        showShareSheet = true
     }
 }
 
